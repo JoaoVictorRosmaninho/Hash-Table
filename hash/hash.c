@@ -22,42 +22,37 @@ void resize(TableHash *table) {
     List **temp; 
     temp = (List **) calloc((table->size * GROWTH_FACTOR), sizeof(List *));
     for (int i = 0; i < table->size; i++)
-        temp[i] = table->table[i];
-    free(table->table);
-    table->table = temp;
+        temp[i] = table->values[i];
+    free(table->values);
+    table->values = temp;
     table->size *= GROWTH_FACTOR;
 }
 
-void Insert(char *key, char *value, TableHash *table) {
+void Insert(char *key, List *value, TableHash *table) {
     unsigned int hash = hashC(key, table->size);
     unsigned int hashAux = hashD(key, table->size);
    
     if (table->occupation_tax > LOAD_FACTOR)
         resize(table);
-    while ((table->table[hash] != NULL) && (strcmp(key, table->key) != 0)) {
+    while ((table->values[hash] != NULL)) {
         hash += hashAux;      
         if (hash > table->size)
             hash -= table->size;
     }
-    if (table->table[hash] == NULL) {
-        
-        table->table[hash] = initList();
-        table->key = strdup(key);
-    } else 
-        table->occupation--;
-    add(table->table[hash], value);
+    if (table->values[hash] != NULL) return; // posicao já ocupada 
+    value->key = strdup(key);
+    table->values[hash] = value;
     table->occupation++;
     table->occupation_tax = (float) table->occupation / table->size;
 }
 
 void get(char *key, TableHash *table) {
-    display(table->table[hashC(key, table->size)]);
+    display(table->values[hashC(key, table->size)]);
 }
 
 void initHashTable(TableHash *table) {
-    table->table = calloc((TABLE_SIZE * GROWTH_FACTOR), sizeof(List *));
+    table->values = (List **) calloc(TABLE_SIZE, sizeof(List *));
     table->occupation = 0;
     table->occupation_tax = 0.0;
-    table->key = NULL;
     table->size = TABLE_SIZE;
 }

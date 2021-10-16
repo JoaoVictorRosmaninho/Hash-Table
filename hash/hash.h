@@ -12,8 +12,7 @@
 # define GROWTH_FACTOR 1.5
 
   typedef struct tableHash {
-      List **table;
-      char *key;
+      List **values;
       unsigned int occupation;
       unsigned int size;
       float occupation_tax;
@@ -25,7 +24,7 @@
 
   void resize(TableHash *table);
 
-  void Insert(char *key, char *value, TableHash *table);
+  void Insert(char *key, List *value, TableHash *table);
 
   void get(char *key, TableHash *table);
  

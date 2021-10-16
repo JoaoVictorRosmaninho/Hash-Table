@@ -17,6 +17,7 @@
   typedef struct list {
     Node *node_ini;
     Node *node_end;
+    char *key;
     unsigned int size;
   } List;
 
