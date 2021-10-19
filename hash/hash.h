@@ -18,7 +18,7 @@
       float occupation_tax;
     } TableHash;
 
-  static inline unsigned int hashC(char *key, unsigned int tableSize);
+  unsigned int hashC(char *key, unsigned int tableSize);
 
   static inline unsigned int hashD(char *key, unsigned int tableSize);
 
